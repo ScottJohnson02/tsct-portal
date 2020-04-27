@@ -174,6 +174,30 @@ label input {
   color: #8b1e41;
 }
 
+.nav-builder {
+  list-style: none;
+  display: flex;
+  margin: 0 0 2em 0;
+  padding: 0;
+}
+.nav-dynamic,
+.nav-static {
+  text-decoration: none;
+  margin-right: .25em;
+}
+
+.nav-dynamic {
+  color: #8b1e41;
+}
+
+.nav-dynamic:hover {
+  text-decoration: underline;
+}
+
+.nav-static {
+  color: black;
+  cursor: default;
+}
 /**
  * Assign
  */

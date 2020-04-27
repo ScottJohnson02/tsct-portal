@@ -13,10 +13,14 @@ bp = Blueprint('sessions', __name__)
 @bp.route('/sessions', methods=('GET', 'POST'))
 @login_required
 def sessions():
-    cur = get_db().cursor()
-
-    # grabs course id from the one clicked on
     course_id = request.args.get('course_id')
+    all = request.args.get('all')
+
+
+    cur = get_db().cursor()
+    if course_id:
+        # grabs course id from the one clicked on
+        course_name = course(course_id)
 
     # shows student sessions
     if g.user['role'] == 'student':
@@ -50,11 +54,30 @@ def sessions():
         # pulling string out of nested list
         classes.append(classname[0][0])
         sections.append(sess[2])
+
+        # grabs course id from the one clicked on
+        course_name = course(sess[0])
+
     if g.user['role'] == 'teacher':
-        return render_template('portal/sessions.html', sessions=classes, sections=sections, course_id=course_id)
+        return render_template('portal/sessions.html',
+                                sessions=classes,
+                                sections=sections,
+                                course_id=course_id,
+                                course_name=course_name)
 
     if g.user['role'] == 'student':
-        return render_template('portal/sessions.html', sessions=classes, sections=sections, course_id=course_id)
+        return render_template('portal/sessions.html', sessions=classes, sections=sections, course_id=course_id, course_name='None')
+
+#-- Function for grabbing course and section -----------------------------------
+def course(course_id):
+    cur = get_db().cursor()
+    # Course name where it matches course id
+    cur.execute("""SELECT name FROM courses WHERE id = %s;""",
+                (course_id,))
+    course_name = cur.fetchall()[0][0]
+
+    name = course_name
+    return name
 
 
 @bp.route('/createsession', methods=("GET", "POST"))
@@ -186,11 +209,17 @@ def session_delete():
         cur.execute("SELECT * FROM assignments WHERE course_id= %s AND section = %s;",
                     (course_id, section))
         selected = cur.fetchall()
-        print(section)
-        print(course_id)
-        print(selected)
+
+        cur.execute("DELETE FROM assignments WHERE (course_id= %s AND section = %s);",
+                    (course_id, section))
+        get_db().commit()
+        cur.execute("DELETE FROM student_sessions WHERE  course_id= %s AND section = %s;",
+                    (course_id, section))
+        get_db().commit()
         cur.execute("DELETE FROM sessions WHERE course_id = %s AND section = %s;",
                     (course_id, section))
         get_db().commit()
 
         return redirect(url_for('courses.courses'))
+    else:  # if not a teacher, send to home
+        return render_template('portal/home.html')

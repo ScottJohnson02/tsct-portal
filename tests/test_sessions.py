@@ -28,7 +28,7 @@ def test_view_course_sessions(app, client, auth):
 
         # get the sessions in the class
         response = client.get('/sessions?course_id=1')
-        assert response.data.count(b'Software Project II') == 2
+        assert response.data.count(b'Software Project II') == 3
 
 
 # create sessions
@@ -46,7 +46,7 @@ def test_create_session(app, client, auth):
             'section': 'H', 'meeting': '09:18', 'location': '100', 'students': 'kyle'})
 
         response = client.get('/sessions?course_id=1')
-        assert response.data.count(b'Software Project II') == 3
+        assert response.data.count(b'Software Project II') == 4
 
 
 def test_view_sessions(app, client, auth):

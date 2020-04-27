@@ -3,16 +3,20 @@
 {% block title %}TSCT Portal{% endblock %}
 
 {% block content %}
+<ul class='nav-builder'>
+  <li><a class="nav-dynamic" href="{{ url_for('auth.home') }}">Home></a></li>
+  <li class="nav-static">Courses</li>
+</ul>
 <h1>Courses</h1>
 <a class="fake-button" href="{{ url_for('courses.courses_create') }}">Create a New Course</a>
 
 <ul>
   {% for course in teacher_courses %}
-  <li>{{ course['name'] }}
+  <li>
+    <a class="session" href="{{ url_for('courses.courses_view', cour_id=course.id) }}">{{ course['name'] }}</a>
     <div class="button-group">
       <a class="fake-button" href="{{ url_for('courses.courses_edit', cour_id=course.id) }}">Edit</a>
-      <a class="fake-button" href="{{ url_for('courses.courses_view', cour_id=course.id) }}">View</a>
-      <a class="fake-button" href="{{ url_for('sessions.sessions', course_id=course.id) }}">Sessions</a>
+      <a class="fake-button" href="{{ url_for('sessions.sessions', course_id=course.id) }}">sessions</a>
     </div>
   </li>
   {% endfor %}

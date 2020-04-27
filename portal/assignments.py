@@ -4,6 +4,7 @@ from flask import (
 
 from portal.db import get_db
 from portal.auth import teacher_required, login_required
+from portal.sessions import course
 
 bp = Blueprint('assignments', __name__)
 
@@ -14,16 +15,19 @@ def assignments():
     """View for the assignments"""
     course_id = request.args.get('course_id')
     section = request.args.get('section')
-    coursename = course(course_id, section)
+
+    course_name = course(course_id)
+    course_section = course_name + ' - ' + section
 
     # Grabs all the assignments user and session specific
     student_assignments = user_assignments(course_id, section)
 
     return render_template("portal/assignments.html",
-                            student_assignments=student_assignments,
-                            course_id=course_id,
-                            section=section,
-                            coursename=coursename)
+                                student_assignments=student_assignments,
+                                course_id=course_id,
+                                section=section,
+                                course_section=course_section,
+                                course_name=course_name)
 
 
 #-- Create Assignments --#
@@ -97,15 +101,3 @@ def user_assignments(course_id, section):
 
     student_assignments = cur.fetchall()
     return student_assignments
-
-
-#-- Function for grabbing course and section -----------------------------------
-def course(course_id, section):
-    cur = get_db().cursor()
-    # Course name where it matches course id
-    cur.execute("""SELECT name FROM courses WHERE id = %s;""",
-                (course_id,))
-    course = cur.fetchall()[0][0]
-
-    name = course + ' - ' + section
-    return name

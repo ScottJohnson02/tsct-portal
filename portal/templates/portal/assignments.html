@@ -3,8 +3,20 @@
 {% block title %}TSCT Portal{% endblock %}
 
 {% block content %}
-<h1>{{ coursename }}</h1>
-<p class='assign-title'>Assignments</p>
+<ul class='nav-builder'>
+  <li><a class="nav-dynamic" href="{{ url_for('auth.home') }}">Home></a></li>
+  {% if g.user['role'] == 'teacher' %}
+  <li><a class="nav-dynamic" href="{{ url_for('courses.courses') }}">{{ course_name }}></a></li>
+  <li><a class="nav-dynamic" href="{{ url_for('sessions.sessions', course_id=course_id) }}">{{ section }}></a></li>
+  {% elif g.user['role'] == 'student' %}
+  <li><a class="nav-dynamic" href="{{ url_for('sessions.sessions', course_id=course_id) }}">{{ course_name}} - {{ section }}></a></li>
+  {% endif %}
+
+  <li class="nav-static">Assignments</li>
+</ul>
+
+<h1>{{ course_section }}</h1>
+
 
 {% if g.user['role'] == 'teacher' %}
   <a class='fake-button' href="{{ url_for('assignments.assignments_create', course_id=course_id, section=section) }}">Create New Assignment</a>
@@ -19,5 +31,7 @@
 
 {% endfor %}
 </ul>
+
+
 
 {% endblock %}
