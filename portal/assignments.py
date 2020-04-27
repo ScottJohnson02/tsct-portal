@@ -50,7 +50,7 @@ def assignments_create():
                            VALUES (%s, %s, %s, %s, %s, %s, %s);""",
                            (course_id, section, name, type, points, duedate, students[0]))
             get_db().commit()
-        cur.close()
+            cur.close()
 
         return redirect(url_for('assignments.assignments',
                                  course_id=course_id,
