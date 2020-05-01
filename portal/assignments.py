@@ -34,10 +34,10 @@ def assignments(course_id, section):
 @bp.route('/createassignment', methods=("GET", "POST"))
 @teacher_required
 def assignments_create():
+    course_id = request.args.get('course_id')
+    section = request.args.get('section')
     """View for creating an Assignment"""
     if request.method == "POST":
-        course_id = request.args.get('course_id')
-        section = request.args.get('section')
         name = request.form['name']
         type = request.form['type']
         points = request.form['points']
@@ -56,7 +56,9 @@ def assignments_create():
                                  course_id=course_id,
                                  section=section))
 
-    return render_template('portal/createassignment.html')
+    return render_template('portal/createassignment.html',
+                            course_id=course_id,
+                            section=section)
 
 
 #-- Assignments for student/s --------------------------------------------------

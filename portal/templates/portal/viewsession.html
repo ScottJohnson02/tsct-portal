@@ -3,11 +3,11 @@
 {% block title %}TSCT Portal{% endblock %}
 
 {% block content %}
+<a class="fake-button" href="{{ url_for('sessions.sessions_for_teachers', course_id=course_id) }}">Back</a>
 
 <h1>Viewing: {{ classname }}-{{ section }}</h1>
 
 {% if g.user['role'] == 'teacher' %}
-
 <form class="button" action="{{ url_for('sessions.session_delete')}}" method="post">
   <input type="hidden" name="course_id" value="{{session_info['course_id']}}">
   <input type="hidden" name="section" value="{{session_info['section']}}">

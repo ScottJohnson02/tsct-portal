@@ -106,7 +106,7 @@ def session_create():
         else:
             return check
 
-    return render_template('portal/createsession.html', all_students=all_students)
+    return render_template('portal/createsession.html', all_students=all_students, course_id=course_id)
 
 # @bp.route('/<int:course_id>/<section>/editsession', methods=("GET", "POST"))
 # def session_edit(course_id, section):

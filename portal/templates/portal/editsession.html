@@ -3,6 +3,10 @@
 {% block title %}TSCT Portal{% endblock %}
 
 {% block content %}
+<a class="fake-button" href="{{ url_for('sessions.sessions_for_teachers', course_id=course_id) }}">Back</a>
+
+<h1 class="ts-portal">Edit Session</h1>
+
 <form method="post">
   <label for="section">Section
     <input name="section" id="section" maxlength="1">
@@ -23,10 +27,7 @@
     </li>
     {% endfor %}
   </ul>
-
-
+  
   <input type="submit" value="Register">
-
 </form>
-
 {% endblock %}

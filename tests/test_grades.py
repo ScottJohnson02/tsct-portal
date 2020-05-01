@@ -60,7 +60,7 @@ def test_duplicate_grade(app, client, auth):
         # login as teacher
         auth.teacher_login()
         # If duplicate grade
-        response = client.post('/grades?course_id=2&section=A&assignment_id=4', data={
+        client.post('/grades?course_id=2&section=A&assignment_id=4', data={
             'grade': 13, 'student': 2})
         # add a grade
         response = client.post('/grades?course_id=2&section=A&assignment_id=4', data={

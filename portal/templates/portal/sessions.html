@@ -11,17 +11,46 @@
 
 <h1>Sessions</h1>
 
-<p class='assign-title'>{{ course_section }}</p>
+<p class='assign-title'>{{ course_name }}</p>
 
-<a class='fake-button' href="{{ url_for('sessions.session_create', course_id=course_id) }}">Create New Session</a>
+<a class='fake-button'
+   href="{{ url_for('sessions.session_create',
+   course_id=course_id) }}">
+   Create New Session</a>
 
-<ul>
-{% for teacher_sessions in all_teacher_sessions %}
-<li class="session-li">
-  <a class="session" href="{{ url_for('sessions.session_view', classname=teacher_sessions[1], course_id=teacher_sessions[0], section=teacher_sessions[2]) }}">{{ teacher_sessions[1] }} - {{ teacher_sessions[2] }}</a>
-  <a class='fake-button'  href="{{ url_for('assignments.assignments', course_id=teacher_sessions[0], section=teacher_sessions[2]) }}">Assignments</a>
-</li>
-{% endfor %}
+<table class='table-whole'>
+  <thead>
+    <tr>
+      <th class='table-headers'>Section</th>
+      <th class='table-headers'>View</th>
+      <th class='table-headers'>Assignments</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for teacher_sessions in all_teacher_sessions %}
+    <tr>
+      <td class='table-row'>
+        {{ teacher_sessions[2] }}
+      </td>
 
-</ul>
+      <td class='table-button-holder'>
+        <a class='table-button'
+           href="{{ url_for('sessions.session_view',
+           classname=teacher_sessions[1],
+           course_id=teacher_sessions[0],
+           section=teacher_sessions[2]) }}">
+           View</a>
+      </td>
+
+      <td class='table-button-holder'>
+        <a class='table-button'
+           href="{{ url_for('assignments.assignments',
+           course_id=teacher_sessions[0],
+           section=teacher_sessions[2]) }}">
+           Assignments</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
   {% endblock %}

@@ -25,16 +25,33 @@
 
 {% endif %}
 
-<ul class='assign-ul'>
-{% for assignments in student_assignments %}
+<table class='table-whole'>
+  <thead>
+    <th class='table-headers'>Name</th>
+    <th class='table-headers'>Type</th>
+    <th class='table-headers'>Points</th>
+    <th class='table-headers'>Due Date</th>
+    <th class='table-headers'>Grade</th>
+  </thead>
+  <tbody>
+    {% for assignments in student_assignments %}
+    <tr>
+      <td class='table-row'>{{ assignments["name"] }}</td>
+      <td class='table-row'>{{ assignments["type"]}}</td>
+      <td class='table-row'>{{ assignments["points"] }}</td>
+      <td class='table-row'>{{ assignments["due_date"]}}</td>
+      <td class='table-button-holder'>
+        <a class='table-button' href="{{ url_for('grades.grades',
+                    course_id=course_id,
+                    section=section,
+                    assignment_id=assignments['id']) }}">
+                    Grade</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
 
-  <li class='assign-li'>
-    {{ assignments["name"] }} ({{ assignments["points"] }} Points)
-    <a class='fake-button' href="{{ url_for('grades.grades', course_id=course_id, section=section, assignment_id=assignments['id']) }}">Grade</a>
-  </li>
-
-{% endfor %}
-</ul>
+</table>
 
 
 

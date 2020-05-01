@@ -13,7 +13,7 @@
 <ul>
 {% for class_session in all_student_sessions %}
 <li class="session-li">
-  <a class="session" href="{{ url_for('sessions.session_view', classname=class_session[0], course_id=class_session[1], section=class_session[2]) }}">{{ class_session[0] }} - {{ class_session[2] }}</a>
+  <a class='table-button' href="{{ url_for('sessions.session_view', classname=class_session[0], course_id=class_session[1], section=class_session[2]) }}">{{ class_session[0] }} - {{ class_session[2] }}</a>
   <a class='fake-button'  href="{{ url_for('assignments.assignments', course_id=class_session[1], section=class_session[2]) }}">Assignments</a>
 </li>
 {% endfor %}

@@ -15,45 +15,52 @@
 </head>
 
 <body>
-  <header>
-    <h1 class='nav-title'>{{ self.title() }}</h1>
+  <section class="base-section">
 
-    {% if g.user %}
-    <a class="nav-logout" href="{{ url_for('auth.logout') }}">Logout</a>
-    <p class='nav-name'>Welcome Back {{ g.user.name }}!</p>
+    <header>
+      <div class="nav-title">
+      <h1>{{ self.title() }}</h1>
 
-    <ul class="nav">
-      <a class="buttons" href="{{ url_for('auth.home') }}">Home</a>
+      {% if g.user %}
+      <a class="nav-logout" href="{{ url_for('auth.logout') }}">Logout</a>
+      </div>
+      <p>Welcome Back {{ g.user.name }}!</p>
 
-      {% if g.user.role == 'teacher' %}
-      <a class="buttons" href="{{ url_for('courses.courses') }}">Courses</a>
-      {% endif %}
+      <ul class="nav">
+        <a href="{{ url_for('auth.home') }}">Home</a>
 
-      {% if g.user.role == 'student' %}
+        {% if g.user.role == 'teacher' %}
+        <a href="{{ url_for('courses.courses') }}">Courses</a>
+        {% endif %}
 
-      <a class="buttons" href="{{ url_for('sessions.sessions_for_students') }}">Schedule</a>
-      {% endif %}
+        {% if g.user.role == 'student' %}
 
-      {% endif %}
-    </ul>
+        <a href="{{ url_for('sessions.sessions_for_students') }}">Schedule</a>
+        {% endif %}
 
-  </header>
+        {% endif %}
+      </ul>
 
-  <main>
-    {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-    {% endfor %}
-    {% block content %}{% endblock %}
-  </main>
+    </header>
 
-  <footer>
-    <h2>Thaddeus Stevens College of Technology</h2>
-    <address>
-      <p>750 E King St</p>
-      <p>Lancaster, PA 17602</p>
-      <p><a href="tel:1-717-299-7701">717.299.7701</a></p>
-    </address>
-  </footer>
+    <main>
+      {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+      {% endfor %}
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+      <h2>Thaddeus Stevens College of Technology</h2>
+      <address>
+        <p>750 E King St</p>
+        <p>Lancaster, PA 17602</p>
+        <p><a href="tel:1-717-299-7701">717.299.7701</a></p>
+      </address>
+    </footer>
+
+  </section>
+
 </body>
 
 </html>
