@@ -2,7 +2,24 @@
 
 {% block title %}TSCT Portal{% endblock %}
 
-{% block content %}
+{% block content %}<ul class='nav-builder'>
+  <li>
+    <a class="nav-dynamic" href="{{ url_for('auth.home') }}">
+      Home></a>
+  </li>
+
+  <li>
+    <a class="nav-dynamic" href="{{ url_for('courses.courses') }}">
+      {{ course_name }}></a>
+  </li>
+
+  <li>
+    <a class="nav-dynamic" href="{{ url_for('sessions.sessions_for_teachers', course_id=course_id) }}">
+      {{ section }}></a>
+  </li>
+
+   <li class="nav-static">Assignment</li>
+</ul>
 <h1>{{ course_section }}</h1>
 
 
