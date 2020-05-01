@@ -253,6 +253,10 @@ label input {
    width: 3em;
  }
 
+ .grade-row {
+   border-right: 1px solid gray;
+ }
+
  .grade-title {
    display: flex;
    justify-content: center;

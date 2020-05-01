@@ -3,24 +3,7 @@
 {% block title %}TSCT Portal{% endblock %}
 
 {% block content %}
-
-<ul class='nav-builder'>
-  <li>
-    <a class="nav-dynamic" href="{{ url_for('auth.home') }}">Home></a>
-  </li>
-  {% if g.user['role'] == 'teacher' %}
-  <li><a class="nav-dynamic" href="{{ url_for('courses.courses') }}">{{ course_name }}></a></li>
-  <li><a class="nav-dynamic" href="{{ url_for('sessions.sessions_for_teachers', course_id=course_id) }}">{{ section }}></a></li>
-  <li><a class="nav-dynamic" href="{{ url_for('assignments.assignments', course_id=course_id, section=section)}}">{{ name }}></a></li>
-  {% elif g.user['role'] == 'student' %}
-  <li><a class="nav-dynamic" href="{{ url_for('sessions.sessions_for_students') }}">{{ course_name}} - {{ section }}></a></li>
-  {% endif %}
-
-  <li class='nav-static'>Grades</li>
-</ul>
-
 <h1 class='grade-title'>Enter Grades</h1>
-
 <p class='grade'>{{ name }}</p>
 
 <table class='table-whole'>
