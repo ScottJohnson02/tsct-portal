@@ -24,7 +24,7 @@ def sessions_for_students():
                    (g.user['id'],)) # getting course name, course id and section with a join
     all_student_sessions = cur.fetchall() # all the values are displayed with jinja2 in student_schedule.html
     cur.close()
-    print(all_student_sessions)
+
     return render_template('portal/student_schedule.html', all_student_sessions=all_student_sessions)
 
 @bp.route('/sessions/<int:course_id>')

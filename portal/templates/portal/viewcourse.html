@@ -3,14 +3,14 @@
 {% block title %}TSCT Portal{% endblock %}
 
 {% block content %}
-<a class="fake-button" href="{{ url_for('courses.courses') }}">Back</a>
+<a class="white-to-red" href="{{ url_for('courses.courses') }}">Back</a>
 
 <h1>Viewing: {{ course['name'] }}</h1>
 
 <div class="button-group">
-  <a class="fake-button" href="{{ url_for('courses.courses_edit', cour_id=course.id) }}">Edit Course</a>
+  <a class="white-to-red" href="{{ url_for('courses.courses_edit', cour_id=course.id) }}">Edit Course</a>
   <form class="button" action="{{ url_for('courses.courses_delete') }}" method="post">
-    <button type="submit" class="fake-button" name="course_to_delete" value="{{ course.id }}">Delete Course</button>
+    <button type="submit" class="white-to-red" name="course_to_delete" value="{{ course.id }}">Delete Course</button>
   </form>
 </div>
 

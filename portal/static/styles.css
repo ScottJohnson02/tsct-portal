@@ -92,7 +92,7 @@ main {
   text-align: center;
 }
 
-.fake-button {
+.white-to-red {
   background: white;
   border: solid grey 2px;
   border-radius: 1em;
@@ -159,7 +159,7 @@ label input {
 }
 
 .home-courses:hover,
-.fake-button:hover {
+.white-to-red:hover {
   background-color: #8b1e41;
   color:  white;
 }
@@ -170,13 +170,20 @@ label input {
 .nav {
   display: flex;
   margin: 0;
+  margin-left: 1em;
 }
 
 .nav-title {
   display: flex;
   margin: 0;
+  margin-top: 1em;
+  margin-left: 2em;
   height: 3em;
   justify-content: space-between;
+}
+
+.nav-welcome {
+  margin-left: 2em;
 }
 
 .nav-title h1 {

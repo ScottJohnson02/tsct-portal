@@ -24,7 +24,7 @@
       {% if g.user %}
       <a class="nav-logout" href="{{ url_for('auth.logout') }}">Logout</a>
       </div>
-      <p>Welcome Back {{ g.user.name }}!</p>
+      <p class='nav-welcome'>Welcome Back {{ g.user.name }}!</p>
 
       <ul class="nav">
         <a href="{{ url_for('auth.home') }}">Home</a>

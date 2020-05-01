@@ -21,7 +21,7 @@
 
 
 {% if g.user['role'] == 'teacher' %}
-  <a class='fake-button' href="{{ url_for('assignments.assignments_create', course_id=course_id, section=section) }}">Create New Assignment</a>
+  <a class="white-to-red" href="{{ url_for('assignments.assignments_create', course_id=course_id, section=section) }}">Create New Assignment</a>
 
 {% endif %}
 
@@ -35,7 +35,7 @@
     {% if g.user['role'] == 'teacher' %}
     <th class='table-headers'>Grade</th>
     {% endif %}
-    
+
   </thead>
   <tbody>
     {% for assignments in student_assignments %}

@@ -3,7 +3,7 @@
 {% block title %}TSCT Portal{% endblock %}
 
 {% block content %}
-<a class="fake-button" href="{{ url_for('sessions.sessions_for_teachers', course_id=course_id) }}">Back</a>
+<a class="white-to-red" href="{{ url_for('sessions.sessions_for_teachers', course_id=course_id) }}">Back</a>
 
 <h1>Viewing: {{ classname }}-{{ section }}</h1>
 
@@ -11,7 +11,7 @@
 <form class="button" action="{{ url_for('sessions.session_delete')}}" method="post">
   <input type="hidden" name="course_id" value="{{session_info['course_id']}}">
   <input type="hidden" name="section" value="{{session_info['section']}}">
-  <button type="submit" class="fake-button" name="session_to_delete">Delete Session</button>
+  <button type="submit" class="white-to-red" name="session_to_delete">Delete Session</button>
 </form>
 {% endif %}
 
