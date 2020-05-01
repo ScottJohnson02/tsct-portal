@@ -78,6 +78,22 @@ def assignments_create():
 
     return render_template('portal/createassignment.html')
 
+@bp.route('/assignments/<int:course_id>/<section>/<int:assignment_id>/viewdetails')
+@login_required
+def assignments_view(course_id, section, assignment_id):
+    cur = get_db().cursor()
+
+    # Pulls out all assignments for the course
+    cur.execute("""SELECT * FROM assignments a JOIN grades g
+                   ON (a.id = g.assignment_id)
+                   WHERE a.course_id = %s
+                   AND a.section = %s AND g.assignment_id = %s;""",
+                   (course_id, section, assignment_id))
+
+    details = cur.fetchone()
+    course_name = course(course_id)
+
+    return render_template('portal/assignments_view.html', details=details, course_name=course_name, section=section)
 
 #-- Assignments for student/s --------------------------------------------------
 def user_assignments(course_id, section):
