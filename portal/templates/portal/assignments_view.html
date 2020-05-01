@@ -1,0 +1,23 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}TSCT Portal{% endblock %}
+
+{% block content %}
+<ul class='nav-builder'>
+  <li>
+    <a class="nav-dynamic" href="{{ url_for('auth.home') }}">Home></a>
+  </li>
+  <li><a class="nav-dynamic" href="{{ url_for('sessions.sessions_for_students') }}">{{ course_name }} - {{ section }}></a></li>
+
+  <li><a class="nav-dynamic" href="{{ url_for('assignments.assignments', course_id=details[1], section=details[2]) }}">Assignments></a></li>
+
+  <li class="nav-static">{{ details[3] }}</li>
+</ul>
+
+<h1>Viewing {{ details[3] }}</h1>
+
+<ul class='assign-ul'>
+  <li class='assign-li'>Due: {{ details[6] }}</li>
+  <li class='assign-li'>Grade: {{ details[9] }} / {{ details[5] }}</li>
+</ul>
+{% endblock %}

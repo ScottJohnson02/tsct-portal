@@ -13,22 +13,42 @@ bp = Blueprint('assignments', __name__)
 @login_required
 def assignments(course_id, section):
     """View for the assignments"""
-    #course_id = request.args.get('course_id')
-    #section = request.args.get('section')
+    if g.user['role'] == 'teacher':
+        course_name = course(course_id)
+        course_section = course_name + ' - ' + section
 
-    course_name = course(course_id)
-    course_section = course_name + ' - ' + section
+        # Grabs all the assignments user and session specific
+        student_assignments = user_assignments(course_id, section)
 
-    # Grabs all the assignments user and session specific
-    student_assignments = user_assignments(course_id, section)
 
-    return render_template("portal/assignments.html",
+        return render_template("portal/assignments.html",
+                                    student_assignments=student_assignments,
+                                    course_id=course_id,
+                                    section=section,
+                                    course_section=course_section,
+                                    course_name=course_name)
+    if g.user['role'] == 'student':
+        course_name = course(course_id)
+        course_section = course_name + ' - ' + section
+
+        cur = get_db().cursor()
+        total_earned = 0
+        total_possible = 0
+        student_assignments = get_student_assignments(course_id, section)
+        for assignment in student_assignments:
+            total_possible = total_possible + assignment[5]
+
+            if assignment[9] != None:
+                total_earned = total_earned + assignment[9]
+
+        return render_template("portal/student_assignments.html",
                                 student_assignments=student_assignments,
                                 course_id=course_id,
                                 section=section,
                                 course_section=course_section,
-                                course_name=course_name)
-
+                                course_name=course_name,
+                                total_earned=total_earned,
+                                total_possible=total_possible)
 
 #-- Create Assignments --#
 @bp.route('/createassignment', methods=("GET", "POST"))
@@ -60,13 +80,42 @@ def assignments_create():
                             course_id=course_id,
                             section=section)
 
+@bp.route('/assignments/<int:course_id>/<section>/<int:assignment_id>/viewdetails')
+@login_required
+def assignments_view(course_id, section, assignment_id):
+    cur = get_db().cursor()
+
+    # Pulls out all assignments for the course
+    cur.execute("""SELECT * FROM assignments a JOIN grades g
+                   ON (a.id = g.assignment_id)
+                   WHERE a.course_id = %s
+                   AND a.section = %s AND g.assignment_id = %s;""",
+                   (course_id, section, assignment_id))
+
+    details = cur.fetchone()
+    course_name = course(course_id)
+
+    return render_template('portal/assignments_view.html', details=details, course_name=course_name, section=section)
 
 #-- Assignments for student/s --------------------------------------------------
 def user_assignments(course_id, section):
     cur = get_db().cursor()
 
     # Pulls out all assignments for the course
-    cur.execute("""SELECT * FROM assignments AS a
+    cur.execute("""SELECT * FROM assignments
+                   WHERE course_id = %s
+                   AND section = %s;""",
+                   (course_id, section))
+
+    assignments = cur.fetchall()
+    return assignments
+
+def get_student_assignments(course_id, section):
+    cur = get_db().cursor()
+
+    # Pulls out all assignments for the course
+    cur.execute("""SELECT * FROM assignments a JOIN grades g
+                   ON (a.id = g.assignment_id)
                    WHERE a.course_id = %s
                    AND a.section = %s;""",
                    (course_id, section))
