@@ -18,13 +18,13 @@ def sessions_for_students():
 
     cur = get_db().cursor()
 
-    cur.execute("""SELECT c.name, ss.course_id, ss.section
+    cur.execute("""SELECT c.major, c.name, c.num, ss.course_id, ss.section
                    FROM student_sessions AS ss JOIN courses AS c
                    ON (ss.course_id = c.id) WHERE student_id = %s;""",
                    (g.user['id'],)) # getting course name, course id and section with a join
     all_student_sessions = cur.fetchall() # all the values are displayed with jinja2 in student_schedule.html
     cur.close()
-
+    print(all_student_sessions)
     return render_template('portal/student_schedule.html', all_student_sessions=all_student_sessions)
 
 @bp.route('/sessions/<int:course_id>')

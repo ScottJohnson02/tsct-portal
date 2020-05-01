@@ -31,7 +31,11 @@
     <th class='table-headers'>Type</th>
     <th class='table-headers'>Points</th>
     <th class='table-headers'>Due Date</th>
+
+    {% if g.user['role'] == 'teacher' %}
     <th class='table-headers'>Grade</th>
+    {% endif %}
+    
   </thead>
   <tbody>
     {% for assignments in student_assignments %}
@@ -40,6 +44,8 @@
       <td class='table-row'>{{ assignments["type"]}}</td>
       <td class='table-row'>{{ assignments["points"] }}</td>
       <td class='table-row'>{{ assignments["due_date"]}}</td>
+
+      {% if g.user['role'] == 'teacher' %}
       <td class='table-button-holder'>
         <a class='table-button' href="{{ url_for('grades.grades',
                     course_id=course_id,
@@ -47,6 +53,8 @@
                     assignment_id=assignments['id']) }}">
                     Grade</a>
       </td>
+      {% endif %}
+
     </tr>
     {% endfor %}
   </tbody>

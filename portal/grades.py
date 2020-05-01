@@ -72,6 +72,15 @@ def get_grades(assign_id):
 
     return cur.fetchall()
 
+# Grabs all grade records for the assignment id
+def get_grades(assign_id):
+    cur = get_db().cursor()
+    cur.execute("""SELECT * FROM grades
+                   WHERE assignment_id = %s;""",
+                   (assign_id,))
+
+    return cur.fetchall()
+
 
 # Inserts grade info for called student and assignment id
 def grade_for(student_sessions_id, points_earned, assignment_id):

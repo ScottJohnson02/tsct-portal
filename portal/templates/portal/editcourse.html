@@ -3,11 +3,12 @@
 {% block title %}TSCT Portal{% endblock %}
 
 {% block content %}
+<a class="fake-button" href="{{ url_for('courses.courses') }}">Back</a>
 <h1 class="ts-portal">Edit course</h1>
 
 {% if session.cour_name %}
 <form method="post">
-  <p>not empty</p>
+
   <label for="cour_name">Course Name
     <input type="text" id="cour_name" name="cour_name" value="{{session.cour_name}}" required>
   </label>
@@ -33,7 +34,7 @@
 
 {% else %}
 <form method="post">
-  <p>is empty</p>
+
   <label for="cour_name">Course Name
     <input type="text" id="cour_name" name="cour_name" value="{{course[2]}}" required>
   </label>

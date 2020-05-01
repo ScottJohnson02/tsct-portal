@@ -4,10 +4,14 @@
 
 {% block content %}
 <section class='home'>
-<h1 class="ts-portal">Thaddeus Stevens Portal</h1>
-{% if g.user.role == 'teacher' %}
-<a class="home-courses" href="{{ url_for('courses.courses') }}">Courses</a>
-{% endif %}
-<p>Welcome {{g.user['name']}} to portal you are a {{g.user['role']}}</p>
+
+  <h1 class="ts-portal">Thaddeus Stevens Portal</h1>
+
+  {% if g.user.role == 'teacher' %}
+  <a class="home-courses" href="{{ url_for('courses.courses') }}">Courses</a>
+  {% endif %}
+
+  <p>Welcome {{g.user['name']}} to portal you are a {{g.user['role']}}</p>
+
 </section>
 {% endblock %}

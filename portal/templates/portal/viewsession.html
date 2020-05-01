@@ -15,11 +15,17 @@
 </form>
 {% endif %}
 
-<ul class="course-list">
-  <li>Session Time:</li>
-  <p>{{ session_info[3] }}</p>
-  <li>Session Location:</li>
-  <p>{{ session_info[4] }}</p>
-</ul>
+<table class='table-whole'>
+  <thead>
+    <th class='table-headers'>Session Time</th>
+    <th class='table-headers'>Session Location</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td class='table-row'>{{ session_info[3] }}</td>
+      <td class='table-row'>{{ session_info[4] }}</td>
+    </tr>
+  </tbody>
+</table>
 
 {% endblock %}
