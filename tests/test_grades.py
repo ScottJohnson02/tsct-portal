@@ -16,7 +16,7 @@ from portal.db import get_db
 # get the grades page as a student here
 
 
-def test_view_grades_as_student():
+def test_view_grades_as_student(app, client, auth):
     with app.app_context():
         db = get_db()
 
