@@ -116,9 +116,12 @@ def get_student_assignments(course_id, section):
     # Pulls out all assignments for the course
     cur.execute("""SELECT * FROM assignments a JOIN grades g
                    ON (a.id = g.assignment_id)
+                   JOIN student_sessions ss
+                   ON (g.student_sessions_id = ss.id)
                    WHERE a.course_id = %s
-                   AND a.section = %s;""",
-                   (course_id, section))
+                   AND a.section = %s
+                   AND ss.student_id = %s;""",
+                   (course_id, section, g.user['id']))
 
     assignments = cur.fetchall()
     return assignments
