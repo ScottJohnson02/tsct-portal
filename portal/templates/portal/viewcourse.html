@@ -3,25 +3,32 @@
 {% block title %}TSCT Portal{% endblock %}
 
 {% block content %}
+<a class="white-to-red" href="{{ url_for('courses.courses') }}">Back</a>
+
 <h1>Viewing: {{ course['name'] }}</h1>
 
 <div class="button-group">
-  <a class="fake-button" href="{{ url_for('courses.courses_edit', cour_id=course.id) }}">Edit Course</a>
+  <a class="white-to-red" href="{{ url_for('courses.courses_edit', cour_id=course.id) }}">Edit Course</a>
   <form class="button" action="{{ url_for('courses.courses_delete') }}" method="post">
-    <button type="submit" class="fake-button" name="course_to_delete" value="{{ course.id }}">Delete Course</button>
+    <button type="submit" class="white-to-red" name="course_to_delete" value="{{ course.id }}">Delete Course</button>
   </form>
 </div>
 
-
-<ul class="course-list">
-  <li>Course Description:</li>
-    <p>{{ course['description'] }}</p>
-  <li>Course Number:</li>
-    <p>{{ course['num'] }}</p>
-  <li>Course Major:</li>
-    <p>{{ course['major'] }}</p>
-  <li>Course Credits:</li>
-    <p>{{ course['credits'] }}</p>
-</ul>
+<table class='table-whole'>
+  <thead>
+    <th class='table-headers'>Course Major</th>
+    <th class='table-headers'>Course Number</th>
+    <th class='table-headers'>Course Credits</th>
+    <th class='table-headers'>Course Description</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td class='table-row'>{{ course['major'] }}</td>
+      <td class='table-row'>{{ course['num'] }}</td>
+      <td class='table-row'>{{ course['credits'] }}</td>
+      <td class='table-row'>{{ course['description'] }}</td>
+    </tr>
+  </tbody>
+</table>
 
 {% endblock %}

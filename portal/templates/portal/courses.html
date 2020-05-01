@@ -7,18 +7,54 @@
   <li><a class="nav-dynamic" href="{{ url_for('auth.home') }}">Home></a></li>
   <li class="nav-static">Courses</li>
 </ul>
-<h1>Courses</h1>
-<a class="fake-button" href="{{ url_for('courses.courses_create') }}">Create a New Course</a>
 
-<ul>
-  {% for course in teacher_courses %}
-  <li>
-    <a class="session" href="{{ url_for('courses.courses_view', cour_id=course.id) }}">{{ course['name'] }}</a>
-    <div class="button-group">
-      <a class="fake-button" href="{{ url_for('courses.courses_edit', cour_id=course.id) }}">Edit</a>
-      <a class="fake-button" href="{{ url_for('sessions.sessions_for_teachers', course_id=course.id) }}">sessions</a>
-    </div>
-  </li>
-  {% endfor %}
-</ul>
+<h1>Courses</h1>
+
+<a class="white-to-red"
+   href="{{ url_for('courses.courses_create') }}">
+   Create a New Course</a>
+
+<table class='table-whole'>
+  <thead>
+    <tr>
+      <th class='table-headers'>Major</th>
+      <th class='table-headers'>Course</th>
+      <th class='table-headers'>Number</th>
+      <th class='table-headers'>View</th>
+      <th class='table-headers'>Edit</th>
+      <th class='table-headers'>Sessions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for course in teacher_courses %}
+    <tr>
+      <td class='table-row'>{{ course['major'] }}</td>
+      <td class='table-row'>{{ course['name'] }}</td>
+      <td class='table-row'>{{ course['num'] }}</td>
+
+      <td class='table-button-holder'>
+        <a class='table-button'
+           href="{{ url_for('courses.courses_view',
+           cour_id=course.id) }}">
+          View</a>
+      </td>
+
+      <td class='table-button-holder'>
+        <a class='table-button'
+           href="{{ url_for('courses.courses_edit',
+           cour_id=course.id) }}">
+           Edit</a>
+      </td>
+
+      <td class='table-button-holder'>
+        <a class='table-button'
+           href="{{ url_for('sessions.sessions_for_teachers',
+           course_id=course.id) }}">
+           Sessions</a>
+      </td>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

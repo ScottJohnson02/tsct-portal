@@ -3,38 +3,49 @@
 {% block title %}TSCT Portal{% endblock %}
 
 {% block content %}
-<ul class='nav-builder'>
-  <li>
-    <a class="nav-dynamic" href="{{ url_for('auth.home') }}">Home></a>
-  </li>
-  {% if g.user['role'] == 'teacher' %}
-  <li><a class="nav-dynamic" href="{{ url_for('courses.courses') }}">{{ course_name }}></a></li>
-  <li><a class="nav-dynamic" href="{{ url_for('sessions.sessions_for_teachers', course_id=course_id) }}">{{ section }}></a></li>
-  {% elif g.user['role'] == 'student' %}
-  <li><a class="nav-dynamic" href="{{ url_for('sessions.sessions_for_students') }}">{{ course_name}} - {{ section }}></a></li>
-  {% endif %}
-
-  <li class="nav-static">Assignments</li>
-</ul>
-
 <h1>{{ course_section }}</h1>
 
 
 {% if g.user['role'] == 'teacher' %}
-  <a class='fake-button' href="{{ url_for('assignments.assignments_create', course_id=course_id, section=section) }}">Create New Assignment</a>
+  <a class="white-to-red" href="{{ url_for('assignments.assignments_create', course_id=course_id, section=section) }}">Create New Assignment</a>
 
 {% endif %}
 
-<ul class='assign-ul'>
-{% for assignments in student_assignments %}
+<table class='table-whole'>
+  <thead>
+    <th class='table-headers'>Name</th>
+    <th class='table-headers'>Type</th>
+    <th class='table-headers'>Points</th>
+    <th class='table-headers'>Due Date</th>
 
-  <li class='assign-li'>
-    {{ assignments["name"] }} ({{ assignments["points"] }} Points)
-    <a class='fake-button' href="{{ url_for('grades.grades', course_id=course_id, section=section, assignment_id=assignments['id']) }}">Grade</a>
-  </li>
+    {% if g.user['role'] == 'teacher' %}
+    <th class='table-headers'>Grade</th>
+    {% endif %}
 
-{% endfor %}
-</ul>
+  </thead>
+  <tbody>
+    {% for assignments in student_assignments %}
+    <tr>
+      <td class='table-row'>{{ assignments["name"] }}</td>
+      <td class='table-row'>{{ assignments["type"]}}</td>
+      <td class='table-row'>{{ assignments["points"] }}</td>
+      <td class='table-row'>{{ assignments["due_date"]}}</td>
+
+      {% if g.user['role'] == 'teacher' %}
+      <td class='table-button-holder'>
+        <a class='table-button' href="{{ url_for('grades.grades',
+                    course_id=course_id,
+                    section=section,
+                    assignment_id=assignments['id']) }}">
+                    Grade</a>
+      </td>
+      {% endif %}
+
+    </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
 
 
 
