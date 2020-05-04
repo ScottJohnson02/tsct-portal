@@ -126,6 +126,14 @@ main {
   display: flex;
   flex-direction: row;
 }
+
+.description {
+  max-width: 40em;
+  display: flex;
+  padding: 1em;
+  border: 1px solid black;
+  margin-bottom: 3em;
+}
 /**
  * Forms
  */

@@ -30,8 +30,6 @@ def test_view_grades_as_student(app, client, auth):
 
 
 # get the grades page as a teacher here
-
-
 def test_view_grades_as_teacher(app, client, auth):
     with app.app_context():
         db = get_db()
@@ -66,7 +64,6 @@ def test_add_grade(app, client, auth):
         check = cur.fetchall()
         assert len(check) == 3
 
-
 def test_duplicate_grade(app, client, auth):
     with app.app_context():
         db = get_db()
@@ -88,18 +85,3 @@ def test_duplicate_grade(app, client, auth):
         cur.execute("SELECT * FROM Grades ")
         check = cur.fetchall()
         assert len(check) == 3
-
-
-def test_gradeview(app, client, auth):
-    with app.app_context():
-        db = get_db()
-
-        cur = db.cursor()
-        cur.execute("SELECT * FROM Grades ")
-        check = cur.fetchall()
-        assert len(check) == 2
-
-        # login as teacher
-        auth.teacher_login()
-        # view grade
-        response = client.get('/viewgrades/1/A?classname=Software+Project+II')

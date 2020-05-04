@@ -3,7 +3,14 @@
 {% block title %}TSCT Portal{% endblock %}
 
 {% block content %}
+{% if g.user['role'] == 'teacher' %}
 <a class="white-to-red" href="{{ url_for('sessions.sessions_for_teachers', course_id=course_id) }}">Back</a>
+{% endif %}
+
+{% if g.user['role'] == 'student' %}
+<a class="white-to-red" href="{{ url_for('sessions.sessions_for_students', course_id=course_id) }}">Back</a>
+{% endif %}
+
 
 <h1>Viewing: {{ classname }}-{{ section }}</h1>
 
