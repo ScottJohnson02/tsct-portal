@@ -38,18 +38,13 @@ def test_create_course(app, client, auth):
 
 
 def test_create_save_data(app, auth, client):
-    with app.app_context():  # allows DB queries to happen
-        db = get_db()
+    auth.teacher_login()
 
-        cur = db.cursor()
-
-        auth.teacher_login()
-
-        # post it
-        response = client.post('/createcourse', data={'cour_maj': 'CSET', 'cour_name': 'Metal',
-                                                      'cour_num': 100, 'cour_desc': 'test description', 'cour_cred': 3})
-        # create a class that already exists
-        assert b'A course already exists with that name.' in response.data
+    # post it
+    response = client.post('/createcourse', data={'cour_maj': 'CSET', 'cour_name': 'Metal',
+                                                  'cour_num': 100, 'cour_desc': 'test description', 'cour_cred': 3})
+    # create a class that already exists
+    assert b'A course already exists with that name.' in response.data
 
 
 def test_edit_course(app, client, auth):
