@@ -19,7 +19,7 @@ def courses():
     cur.execute("SELECT * FROM courses WHERE teacher_id = %s;", (g.user['id'],))
     teacher_courses = cur.fetchall()
 
-    return render_template('portal/courses.html', teacher_courses=teacher_courses)
+    return render_template('portal/courses/courses.html', teacher_courses=teacher_courses)
 
 
 # ------- Create Courses -----------------------------------------------------------------
@@ -47,7 +47,7 @@ def courses_create():
         else:
             return check
 
-    return render_template('portal/createcourse.html')
+    return render_template('portal/courses/createcourse.html')
 
 
 @bp.route('/<int:cour_id>/viewcourse')
@@ -60,7 +60,7 @@ def courses_view(cour_id):
         "SELECT * FROM courses WHERE teacher_id = %s AND id = %s;", (g.user['id'], cour_id))
 
     course = cur.fetchone()
-    return render_template('portal/viewcourse.html', course=course)
+    return render_template('portal/courses/viewcourse.html', course=course)
 
 @bp.route('/deletecourse', methods=("POST",))
 @teacher_required
@@ -113,4 +113,4 @@ def courses_edit(cour_id):
         else:
             return check
 
-    return render_template("portal/editcourse.html", course=course)
+    return render_template("portal/courses/editcourse.html", course=course)

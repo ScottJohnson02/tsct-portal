@@ -76,11 +76,11 @@ def validate_query(action, course_id, *query_args):
             keep_prev_info(
                 action, query_args[0], query_args[1], query_args[2], query_args[3], query_args[4])
             # query_args[5] is the course's original info.
-            return render_template('portal/editcourse.html', course=query_args[5])
+            return render_template('portal/courses/editcourse.html', course=query_args[5])
         elif action == 'create':  # If on create view of courses module.
             keep_prev_info(
                 action, query_args[0], query_args[1], query_args[2], query_args[3], query_args[4])
-            return render_template('portal/createcourse.html')
+            return render_template('portal/courses/createcourse.html')
     else:
         # If no errors in errors, return true to pass a check to go through with editing or creating a course.
         return True
