@@ -61,7 +61,6 @@ def view_session_grades(course_id, section):
         student_points = 0
         student_possible = 0
         for assignment in student_assignments:
-            print(assignment)
             if student['id'] == assignment[8]:
                 if assignment[9] != None:
                     student_possible = student_possible + assignment[5]
