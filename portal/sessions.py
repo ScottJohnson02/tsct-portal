@@ -18,7 +18,7 @@ def sessions_for_students():
 
     cur = get_db().cursor()
 
-    cur.execute("""SELECT c.name, ss.course_id, ss.section
+    cur.execute("""SELECT c.major, c.name, c.num, ss.course_id, ss.section
                    FROM student_sessions AS ss JOIN courses AS c
                    ON (ss.course_id = c.id) WHERE student_id = %s;""",
                    (g.user['id'],)) # getting course name, course id and section with a join
@@ -106,7 +106,7 @@ def session_create():
         else:
             return check
 
-    return render_template('portal/createsession.html', all_students=all_students)
+    return render_template('portal/createsession.html', all_students=all_students, course_id=course_id)
 
 # @bp.route('/<int:course_id>/<section>/editsession', methods=("GET", "POST"))
 # def session_edit(course_id, section):

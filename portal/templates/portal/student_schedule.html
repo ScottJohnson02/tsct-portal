@@ -10,12 +10,36 @@
 
 <h1>Sessions</h1>
 
-<ul>
-{% for class_session in all_student_sessions %}
-<li class="session-li">
-  <a class="session" href="{{ url_for('sessions.session_view', classname=class_session[0], course_id=class_session[1], section=class_session[2]) }}">{{ class_session[0] }} - {{ class_session[2] }}</a>
-  <a class='fake-button'  href="{{ url_for('assignments.assignments', course_id=class_session[1], section=class_session[2]) }}">Assignments</a>
-</li>
-{% endfor %}
-</ul>
+<table class='table-whole'>
+  <thead>
+    <tr>
+      <th class='table-headers'>Major</th>
+      <th class='table-headers'>Course</th>
+      <th class='table-headers'>Number</th>
+      <th class='table-headers'>View</th>
+      <th class='table-headers'>Assignments</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for class_session in all_student_sessions %}
+    <tr>
+      <td class='table-row'>{{ class_session['major'] }}</td>
+
+      <td class='table-row'>{{ class_session['name']}}</td>
+
+      <td class='table-row'>{{ class_session['num'] }}</td>
+
+      <td class='table-button-holder'>
+        <a class='table-button' href="{{ url_for('sessions.session_view', classname=class_session['name'], course_id=class_session['course_id'], section=class_session['section']) }}">
+          View</a>
+      </td>
+
+      <td class='table-button-holder'>
+        <a class='table-button'  href="{{ url_for('assignments.assignments', course_id=class_session['course_id'], section=class_session['section']) }}">
+          Assignments</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

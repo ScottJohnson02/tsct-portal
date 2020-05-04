@@ -3,6 +3,7 @@ from flask import (
 )
 from portal.auth import teacher_required, login_required
 from portal.db import get_db
+from portal.sessions import course
 
 bp = Blueprint('grades', __name__)
 
@@ -28,18 +29,20 @@ def grades():
 
     students = students_assigned(course_id, section)
     all_grades = get_grades(assign_id)
+    course_name = course(course_id)
+
 
     grades_dict = {}
     for grade in all_grades:
         grades_dict[grade['student_sessions_id']] = grade['points_earned']
 
     return render_template("portal/entergrades.html",
-                           name=name, points=points,
-                           course_id=course_id,
-                           students=students,
-                           section=section,
-                           grades_dict=grades_dict)
-
+                            name=name, points=points,
+                            course_id=course_id,
+                            students=students,
+                            section=section,
+                            course_name=course_name,
+                            grades_dict=grades_dict)
 
 @bp.route('/viewgrades/<int:course_id>/<section>', methods=("GET",))
 @teacher_required
@@ -85,7 +88,6 @@ def view_session_grades(course_id, section):
                            grade_letter=grade_letter,
                            percent=percent)
 
-
 def assignments_info(assign_id):
     # Grabs Name and points for assignment id
     cur = get_db().cursor()
@@ -102,6 +104,24 @@ def get_grades(assign_id):
     cur.execute("""SELECT * FROM grades
                    WHERE assignment_id = %s;""",
                 (assign_id,))
+
+    return cur.fetchall()
+
+# Grabs all grade records for the assignment id
+def get_grades(assign_id):
+    cur = get_db().cursor()
+    cur.execute("""SELECT * FROM grades
+                   WHERE assignment_id = %s;""",
+                   (assign_id,))
+
+    return cur.fetchall()
+
+# Grabs all grade records for the assignment id
+def get_grades(assign_id):
+    cur = get_db().cursor()
+    cur.execute("""SELECT * FROM grades
+                   WHERE assignment_id = %s;""",
+                   (assign_id,))
 
     return cur.fetchall()
 

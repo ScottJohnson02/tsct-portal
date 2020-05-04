@@ -7,10 +7,12 @@
   box-sizing: border-box;
 }
 
+
 html {
   font-family: 'Lato', Helvetica, Arial, sans-serif;
   font-size: 18px;
 }
+
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Crimson Text', serif;
@@ -20,26 +22,36 @@ h1, h2, h3, h4, h5, h6 {
 /**
  * Layout
  */
-body {
+
+.base-section {
+  width: 100%;
   background-color: #8b1e41;
   justify-content: space-between;
   display: flex;
   flex-direction: column;
+  align-items: center;
   min-height: 100vh;
-  padding: 1rem;
+  padding: 0;
+  box-shadow: 0px 0px 5px 2px black;
+
 }
 
 header, footer {
+  width: 100%;
   background-color: white;
   border: #8b1e41 1vw solid;
-  border-radius: 1em;
+  border-radius: 2em;
   padding-left: 1em;
 }
 
 main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50em;
   background-color: white;
   border: #8b1e41 1vw solid;
-  border-radius: 1em;
+  border-radius: 2em;
   padding: 1em;
 }
 
@@ -55,7 +67,21 @@ main {
   }
 }
 
-.fake-button {
+
+.ts-portal {
+  margin: 0;
+  margin-bottom: 1em;
+  display: flex;
+  justify-content: center;
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.home-courses {
   background: white;
   border: solid grey 2px;
   border-radius: 1em;
@@ -66,16 +92,29 @@ main {
   text-align: center;
 }
 
+.white-to-red {
+  background: white;
+  border: solid grey 2px;
+  border-radius: 1em;
+  padding: 5px;
+  text-decoration: none;
+  color: black;
+  box-shadow: 1px 2px 1px 1px lightgrey;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
 .button-group {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  margin-bottom: 2em;
 }
 
 .button {
   width: auto;
-  padding: 1rem 1rem 1rem 0rem;
-  border: none;
-  margin: 12px;
+  padding: 0;
+  margin-left: 3em;
 }
 
 .course-list {
@@ -113,21 +152,14 @@ label input {
  * Session
  */
 
-.session-li {
+.session-li,
+.assign-li  {
   margin: 1.25em;
   list-style: none;
 }
 
-.session {
-  text-decoration: none;
-  list-style: none;
-  color: black;
-  border: 1px solid lightgrey;
-  padding: 5px;
-  border-radius: 5px;
-}
-
-.session:hover {
+.home-courses:hover,
+.white-to-red:hover {
   background-color: #8b1e41;
   color:  white;
 }
@@ -136,22 +168,32 @@ label input {
  * Nav
  */
 .nav {
-  margin: 5px;
-  clear: both;
-}
-
-.nav-name {
-  float: right;
-  margin-right: 1em;
+  display: flex;
+  margin: 0;
+  margin-left: 1em;
 }
 
 .nav-title {
-  float: left;
+  display: flex;
+  margin: 0;
+  margin-top: 1em;
+  margin-left: 2em;
+  height: 3em;
+  justify-content: space-between;
+}
+
+.nav-welcome {
+  margin-left: 2em;
+}
+
+.nav-title h1 {
+  margin: 0;
+  margin-top: .1em;
 }
 
 .nav-logout {
-  float: right;
-  margin: .75em;
+  align-self: center;
+  margin-right: 1em;
   padding: .25em;
   border-radius: 3px;
   text-decoration: none;
@@ -163,13 +205,13 @@ label input {
   text-decoration: none;
   border-radius: 2px 2px 0px 0px;
   padding: .25em;
+  margin-right: .1em;
   color: white;
   background-color: #8b1e41;
 }
 
 .nav a:hover,
-.nav-logout:hover,
-.fake-button:hover {
+.nav-logout:hover {
   background-color: white;
   color: #8b1e41;
 }
@@ -177,7 +219,8 @@ label input {
 .nav-builder {
   list-style: none;
   display: flex;
-  margin: 0 0 2em 0;
+  justify-content: flex-start;
+  width: 40em;
   padding: 0;
 }
 .nav-dynamic,
@@ -201,11 +244,6 @@ label input {
 /**
  * Assign
  */
-
-
-.assign-li {
-  list-style: none;
-}
 
 .assign-title {
   font-size: 1.25em;
@@ -234,7 +272,11 @@ label input {
  .grade-title {
    display: flex;
    justify-content: center;
-   margin: 0; 
+   margin: 0;
+ }
+
+ .grade-submit {
+
  }
 
 /**
@@ -243,6 +285,8 @@ label input {
 
  .table-whole {
    border: 1px solid black;
+   width: 40em;
+   margin-bottom: 3em;
  }
 
  .table-head {
@@ -253,5 +297,39 @@ label input {
  .table-headers {
    border: 1px solid black;
    margin: 0;
-   padding: 0;
+   padding: .5em;
+ }
+
+ .table-row {
+   border-right: 1px solid gray;
+   border-bottom: 1px solid gray;
+   padding: .5em;
+   justify-content: center;
+ }
+
+ .table-button {
+   color: white;
+   text-decoration: none;
+   display: flex;
+   justify-content: center;
+   padding: .5em;
+ }
+
+ .table {
+   display: flex;
+ }
+
+
+ .table-button-holder {
+   text-decoration: none;
+   list-style: none;
+   background-color: #8b1e41;
+   padding: 2px;
+   border-radius: 2px;
+ }
+
+ .table-button-holder:hover,
+ .table-button:hover {
+   background-color: white;
+   color: #8b1e41;
  }

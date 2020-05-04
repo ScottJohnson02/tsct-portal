@@ -47,6 +47,18 @@ def test_create_assignment(app, client, auth):
         response = client.get('/assignments/1/A')
         assert b'top ten review' in response.data
 
+def test_assignment_detail_view(app, client, auth):
+    with app.app_context():
+        db = get_db()
+
+        cur = db.cursor()
+
+        auth.login()
+
+        response = client.get('/assignments/1/A/1/viewdetails')
+        assert b'Viewing homework' in response.data
+        assert b'Due: 2020-05-01' in response.data
+        assert b'Grade: 10 / 10' in response.data
 
 def test_teacher_check(app, client, auth):
     with app.app_context():

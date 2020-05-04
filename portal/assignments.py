@@ -54,10 +54,10 @@ def assignments(course_id, section):
 @bp.route('/createassignment', methods=("GET", "POST"))
 @teacher_required
 def assignments_create():
+    course_id = request.args.get('course_id')
+    section = request.args.get('section')
     """View for creating an Assignment"""
     if request.method == "POST":
-        course_id = request.args.get('course_id')
-        section = request.args.get('section')
         name = request.form['name']
         type = request.form['type']
         points = request.form['points']
@@ -76,8 +76,26 @@ def assignments_create():
                                  course_id=course_id,
                                  section=section))
 
-    return render_template('portal/createassignment.html')
+    return render_template('portal/createassignment.html',
+                            course_id=course_id,
+                            section=section)
 
+@bp.route('/assignments/<int:course_id>/<section>/<int:assignment_id>/viewdetails')
+@login_required
+def assignments_view(course_id, section, assignment_id):
+    cur = get_db().cursor()
+
+    # Pulls out all assignments for the course
+    cur.execute("""SELECT * FROM assignments a JOIN grades g
+                   ON (a.id = g.assignment_id)
+                   WHERE a.course_id = %s
+                   AND a.section = %s AND g.assignment_id = %s;""",
+                   (course_id, section, assignment_id))
+
+    details = cur.fetchone()
+    course_name = course(course_id)
+
+    return render_template('portal/assignments_view.html', details=details, course_name=course_name, section=section)
 
 #-- Assignments for student/s --------------------------------------------------
 def user_assignments(course_id, section):
@@ -98,9 +116,12 @@ def get_student_assignments(course_id, section):
     # Pulls out all assignments for the course
     cur.execute("""SELECT * FROM assignments a JOIN grades g
                    ON (a.id = g.assignment_id)
+                   JOIN student_sessions ss
+                   ON (g.student_sessions_id = ss.id)
                    WHERE a.course_id = %s
-                   AND a.section = %s;""",
-                   (course_id, section))
+                   AND a.section = %s
+                   AND ss.student_id = %s;""",
+                   (course_id, section, g.user['id']))
 
     assignments = cur.fetchall()
     return assignments

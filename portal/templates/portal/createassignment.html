@@ -3,6 +3,9 @@
 {% block title %}TSCT Portal{% endblock %}
 
 {% block content %}
+<a class="white-to-red" href="{{ url_for('assignments.assignments', course_id=course_id, section=section) }}">Back</a>
+
+<h1 class="ts-portal">Create Assignment</h1>
 <form method="post">
   <label for="name">Name
   <input type="text" id="name" name="name" required>
