@@ -57,7 +57,7 @@ def test_assignment_detail_view(app, client, auth):
 
         response = client.get('/assignments/1/A/1/viewdetails')
         assert b'Viewing homework' in response.data
-        assert b'Due: 2020-05-01' in response.data
+        assert b'Due: 2020-05-04' in response.data
         assert b'Grade: 10 / 10' in response.data
 
 def test_teacher_check(app, client, auth):
