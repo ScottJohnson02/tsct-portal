@@ -2,6 +2,7 @@ import psycopg2
 import pytest
 
 from portal.db import get_db
+from portal.grades import get_grades, grade_calc
 
 # Join Table - To View
 # SELECT a.name, g.points_earned a.points
@@ -41,7 +42,7 @@ def test_view_overall_grades_as_teacher(app, client, auth):
 
     response = client.get('/viewgrades/1/A?classname=Web+Development')
     assert b'Average Grade' in response.data
-    
+
 # update/add a grade as a teacher
 def test_add_grade(app, client, auth):
     with app.app_context():
@@ -84,3 +85,13 @@ def test_duplicate_grade(app, client, auth):
         cur.execute("SELECT * FROM Grades ")
         check = cur.fetchall()
         assert len(check) == 3
+
+def test_functions(app, client, auth):
+    with app.app_context():
+        grade_query_results = get_grades(1)
+
+        assert grade_query_results is not None
+
+        letter_grade_results = grade_calc(50)
+
+        assert letter_grade_results is not None
