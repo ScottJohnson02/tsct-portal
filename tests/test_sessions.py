@@ -91,3 +91,12 @@ def test_session_role(app, client, auth, role):
         auth.login()
         request = client.get('/sessions')
         assert b'Software Project II' in request.data
+
+def test_session_errors(app, client, auth):
+    auth.teacher_login()
+
+    response = client.post('/createsession?course_id=2', data={
+        'section': 'A', 'meeting': '11:11', 'location': '', 'students': 'kyle'})
+
+    assert b'That section already exists.</div>' in response.data
+    assert b'Please enter a location.</div>' in response.data

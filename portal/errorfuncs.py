@@ -116,7 +116,7 @@ def validate_session(course_id, section, *session_args):
             keep_prev_info('section', section,
                            session_args[0], session_args[1])
         # session_args[2] is required for createsession.
-        return render_template('portal/createsession.html', all_students=session_args[2])
+        return render_template('portal/createsession.html', all_students=session_args[2], course_id=course_id)
     else:
         # If no errors in errors, return true to pass a check to go through with creating the session.
         return True
