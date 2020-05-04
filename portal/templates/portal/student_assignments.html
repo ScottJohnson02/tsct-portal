@@ -17,14 +17,14 @@
 <p>Total Grade: {{total_earned}} / {{ total_possible }}</p>
 
 <ul class='assign-ul'>
-{% for assignments in student_assignments %}
+  {% for assignments in student_assignments %}
 
   <li class='assign-li'>
     {{ assignments["name"] }} ({{ assignments["points_earned"] }} / {{ assignments["points"] }} Points)
     <a class='fake-button' href="{{ url_for('assignments.assignments_view', course_id=assignments['course_id'], section=assignments['section'], assignment_id=assignments['assignment_id'])}}">Details</a>
   </li>
 
-{% endfor %}
+  {% endfor %}
 </ul>
 
 
