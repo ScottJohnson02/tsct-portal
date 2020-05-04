@@ -21,7 +21,7 @@ def assignments(course_id, section):
         student_assignments = user_assignments(course_id, section)
 
 
-        return render_template("portal/assignments.html",
+        return render_template("portal/assignments/assignments.html",
                                     student_assignments=student_assignments,
                                     course_id=course_id,
                                     section=section,
@@ -41,7 +41,7 @@ def assignments(course_id, section):
             if assignment[9] != None:
                 total_earned = total_earned + assignment[9]
 
-        return render_template("portal/student_assignments.html",
+        return render_template("portal/assignments/student_assignments.html",
                                 student_assignments=student_assignments,
                                 course_id=course_id,
                                 section=section,
@@ -76,7 +76,7 @@ def assignments_create():
                                  course_id=course_id,
                                  section=section))
 
-    return render_template('portal/createassignment.html',
+    return render_template('portal/assignments/createassignment.html',
                             course_id=course_id,
                             section=section)
 
@@ -95,7 +95,7 @@ def assignments_view(course_id, section, assignment_id):
     details = cur.fetchone()
     course_name = course(course_id)
 
-    return render_template('portal/assignments_view.html', details=details, course_name=course_name, section=section)
+    return render_template('portal/assignments/assignments_view.html', details=details, course_name=course_name, section=section)
 
 #-- Assignments for student/s --------------------------------------------------
 def user_assignments(course_id, section):
