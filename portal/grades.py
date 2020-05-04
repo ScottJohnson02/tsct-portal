@@ -36,7 +36,7 @@ def grades():
     for grade in all_grades:
         grades_dict[grade['student_sessions_id']] = grade['points_earned']
 
-    return render_template("portal/entergrades.html",
+    return render_template("portal/grades/entergrades.html",
                             name=name, points=points,
                             course_id=course_id,
                             students=students,
@@ -77,7 +77,7 @@ def view_session_grades(course_id, section):
         percent = round(percent, 2)
         grade_letter = grade_calc(percent)
 
-    return render_template("portal/allgrades.html",
+    return render_template("portal/grades/allgrades.html",
                            students=students,
                            course_id=course_id,
                            section=section,
