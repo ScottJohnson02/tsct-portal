@@ -17,32 +17,31 @@ from portal.db import get_db
 
 
 def test_view_grades_as_student(app, client, auth):
-    with app.app_context():
-        db = get_db()
+    # login as student
+    auth.login()
 
-        cur = db.cursor()
-        # login as student
-        auth.login()
-
-        # get the sessions in the class
-        # response = client.get( # url for grade page)
-        #assert 'the grade field' in response.data
+    # get the sessions in the class
+    response = client.get('/assignments/1/A')
+    assert b'Total Grade' in response.data
+    # response = client.get( # url for grade page)
+    #assert 'the grade field' in response.data
 
 
 # get the grades page as a teacher here
 def test_view_grades_as_teacher(app, client, auth):
-    with app.app_context():
-        db = get_db()
+    # login as teacher
+    auth.teacher_login()
 
-        cur = db.cursor()
-        # login as teacher
-        auth.teacher_login()
+    # get the sessions in the class
+    response = client.get('/grades?course_id=2&section=A&assignment_id=4')
+    assert b'<input type="hidden" name="student" value="2">' in response.data
 
-        # get the sessions in the class
-        response = client.get('/grades?course_id=2&section=A&assignment_id=4')
-        assert b'<input type="hidden" name="student" value="2">' in response.data
+def test_view_overall_grades_as_teacher(app, client, auth):
+    auth.teacher_login()
 
-
+    response = client.get('/viewgrades/1/A?classname=Web+Development')
+    assert b'Average Grade' in response.data
+    
 # update/add a grade as a teacher
 def test_add_grade(app, client, auth):
     with app.app_context():
