@@ -1,0 +1,49 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}TSCT Portal{% endblock %}
+
+{% block content %}
+<ul class='nav-builder'>
+  <li>
+    <a class="nav-dynamic" href="{{ url_for('auth.home') }}">Home></a>
+  </li>
+  <li><a class="nav-dynamic" href="{{ url_for('sessions.sessions_for_teachers',course_id=course_id) }}">{{ classname }} - {{ section }}></a></li>
+
+  <li class="nav-static">All Grades</li>
+</ul>
+
+<h1>{{ course_section }}</h1>
+<p>{{grade_letter}}</p>
+<p>Average Grade: {{total_earned}} / {{total_points}} : {{percent}}% </p>
+
+<table class='table-whole'>
+
+  <thead class='table-head'>
+    <tr class='table-head'>
+      <th class='table-headers'>Name</th>
+      <th class='table-headers'>Points</th>
+      <th class='table-headers'>Total</th>
+    </tr>
+  </thead>
+
+  <tbody class=''>
+    {% for student in students %}
+    <tr class=''>
+
+
+      <td class='grade-row'>{{ student['name'] }}</td>
+      <td class='grade-row'> {{student[-1]}}</td>
+      <td class='grade-row'>{{ student[-2] }}</td>
+
+
+
+    </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+
+
+
+
+{% endblock %}

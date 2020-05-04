@@ -22,6 +22,7 @@
       <th class='table-headers'>Section</th>
       <th class='table-headers'>View</th>
       <th class='table-headers'>Assignments</th>
+      <th class='table-headers'>All Grades</th>     
     </tr>
   </thead>
   <tbody>
@@ -46,6 +47,12 @@
            course_id=teacher_sessions[0],
            section=teacher_sessions[2]) }}">
            Assignments</a>
+      </td>
+      
+      <td class='table-button-holder'>
+           <a class='table-button'
+              href="{{ url_for('grades.view_session_grades', course_id=teacher_sessions[0], section=teacher_sessions[2],classname=teacher_sessions[1]) }}">
+              All Grades</a>
       </td>
     </tr>
     {% endfor %}
