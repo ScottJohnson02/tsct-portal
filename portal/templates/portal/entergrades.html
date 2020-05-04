@@ -52,7 +52,7 @@
           <td class='table-row'>{{ student['name'] }}</td>
 
           <td class='table-row'>
-            {% if grades_dict[student['id']] %}
+            {% if grades_dict[student['id']] or grades_dict[student['id']] == 0 %}
 
             {{ grades_dict[student['id']] }}
 
