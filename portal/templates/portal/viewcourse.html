@@ -19,16 +19,19 @@
     <th class='table-headers'>Course Major</th>
     <th class='table-headers'>Course Number</th>
     <th class='table-headers'>Course Credits</th>
-    <th class='table-headers'>Course Description</th>
   </thead>
   <tbody>
     <tr>
       <td class='table-row'>{{ course['major'] }}</td>
       <td class='table-row'>{{ course['num'] }}</td>
       <td class='table-row'>{{ course['credits'] }}</td>
-      <td class='table-row'>{{ course['description'] }}</td>
     </tr>
   </tbody>
 </table>
 
+<h2>Description</h2>
+
+<article class="description">
+  <p>{{ course['description'] }}</p>
+</article>
 {% endblock %}
