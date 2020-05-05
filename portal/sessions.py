@@ -25,7 +25,7 @@ def sessions_for_students():
     all_student_sessions = cur.fetchall() # all the values are displayed with jinja2 in student_schedule.html
     cur.close()
 
-    return render_template('portal/student_schedule.html', all_student_sessions=all_student_sessions)
+    return render_template('portal/sessions/student_schedule.html', all_student_sessions=all_student_sessions)
 
 @bp.route('/sessions/<int:course_id>')
 @teacher_required
@@ -45,7 +45,7 @@ def sessions_for_teachers(course_id=None): # If no course_id is given, it is Non
 
     cur.close()
 
-    return render_template('portal/sessions.html',
+    return render_template('portal/sessions/sessions.html',
                             all_teacher_sessions=all_teacher_sessions,
                             course_id=course_id,
                             course_name=course(course_id))
@@ -106,7 +106,7 @@ def session_create():
         else:
             return check
 
-    return render_template('portal/createsession.html', all_students=all_students, course_id=course_id)
+    return render_template('portal/sessions/createsession.html', all_students=all_students, course_id=course_id)
 
 # @bp.route('/<int:course_id>/<section>/editsession', methods=("GET", "POST"))
 # def session_edit(course_id, section):
@@ -141,7 +141,7 @@ def session_create():
 #
 #         return redirect(url_for('courses.courses'))
 #
-#     return render_template("portal/editsession.html", course=course)
+#     return render_template("portal/sessions/editsession.html", course=course)
 
 @bp.route('/viewsession/<int:course_id>/<section>/<classname>', methods=('GET', 'POST'))
 @login_required
@@ -153,7 +153,7 @@ def session_view(course_id, section, classname):
         "SELECT * FROM sessions WHERE course_id = %s AND section = %s;", (course_id, section))
     session_info = cur.fetchone()
 
-    return render_template('portal/viewsession.html', course_id=course_id, section=section,  classname=classname, session_info=session_info)
+    return render_template('portal/sessions/viewsession.html', course_id=course_id, section=section,  classname=classname, session_info=session_info)
 
 
 @bp.route('/deletesession', methods=("POST",))

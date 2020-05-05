@@ -98,7 +98,7 @@ def init_db_command():
 @click.command("import-csv")
 @with_appcontext
 def import_csv_command():
-    """CLI command to seed the database with mock data."""
+    """CLI command to to import data from a CSV file."""
     import_csv()
     click.echo("Inserted csv data.")
 

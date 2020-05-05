@@ -9,7 +9,7 @@
 
 <form method="post">
   <label for="cour_name">Course Name
-    <input type="text" id="cour_name" name="cour_name" value='{{session.cour_name}}' required>
+    <input type="text" id="cour_name" name="cour_name" value='{{session.cour_name}}' minlength="4" maxlength="50" pattern="(^\w)(\s*|\w*)*" title="4 to 50 letters only." required>
   </label>
 
   <label for="cour_num">Course Number
@@ -17,7 +17,7 @@
   </label>
 
   <label for="cour_maj">Major
-    <input type="text" id="cour_maj" name="cour_maj" value='{{session.cour_maj}}' maxlength="4" required>
+    <input type="text" id="cour_maj" name="cour_maj" value='{{session.cour_maj}}' minlength="3" maxlength="4" pattern="([A-z]+)" title="3 to 4 letters only." required>
   </label>
 
   <label for="cour_cred">Credits
@@ -25,7 +25,7 @@
   </label>
 
   <label for="cour_desc">Description
-    <textarea id="cour_desc" name="cour_desc" rows="5" cols="33" required>{{session.cour_desc}}</textarea>
+    <textarea id="cour_desc" name="cour_desc" rows="5" cols="33" minlength="4" maxlength="200" pattern="(^\w)([\s\S]*)" title="Descriptions should be 4 to 200 characters only." required>{{session.cour_desc}}</textarea>
   </label>
 
   <input type="submit" value="Submit">

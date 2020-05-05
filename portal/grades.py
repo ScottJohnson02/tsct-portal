@@ -36,7 +36,7 @@ def grades():
     for grade in all_grades:
         grades_dict[grade['student_sessions_id']] = grade['points_earned']
 
-    return render_template("portal/entergrades.html",
+    return render_template("portal/grades/entergrades.html",
                             name=name, points=points,
                             course_id=course_id,
                             students=students,
@@ -77,7 +77,7 @@ def view_session_grades(course_id, section):
         percent = round(percent, 2)
         grade_letter = grade_calc(percent)
 
-    return render_template("portal/allgrades.html",
+    return render_template("portal/grades/allgrades.html",
                            students=students,
                            course_id=course_id,
                            section=section,
@@ -96,16 +96,6 @@ def assignments_info(assign_id):
 
     return cur.fetchall()
 
-
-# Grabs all grade records for the assignment id
-def get_grades(assign_id):
-    cur = get_db().cursor()
-    cur.execute("""SELECT * FROM grades
-                   WHERE assignment_id = %s;""",
-                (assign_id,))
-
-    return cur.fetchall()
-
 # Grabs all grade records for the assignment id
 def get_grades(assign_id):
     cur = get_db().cursor()
@@ -114,16 +104,6 @@ def get_grades(assign_id):
                    (assign_id,))
 
     return cur.fetchall()
-
-# Grabs all grade records for the assignment id
-def get_grades(assign_id):
-    cur = get_db().cursor()
-    cur.execute("""SELECT * FROM grades
-                   WHERE assignment_id = %s;""",
-                   (assign_id,))
-
-    return cur.fetchall()
-
 
 # Inserts grade info for called student and assignment id
 def grade_for(student_sessions_id, points_earned, assignment_id):

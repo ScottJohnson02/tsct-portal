@@ -13,15 +13,13 @@ bp = Blueprint('courses', __name__)
 @teacher_required
 def courses():
     """View for the courses"""
-    # get the id of the teacher
-    teacher = g.user['id']
     # display the courses they own with a query
     cur = get_db().cursor()
 
-    cur.execute("SELECT * FROM courses WHERE teacher_id = %s;", (teacher,))
+    cur.execute("SELECT * FROM courses WHERE teacher_id = %s;", (g.user['id'],))
     teacher_courses = cur.fetchall()
 
-    return render_template('portal/courses.html', teacher_courses=teacher_courses)
+    return render_template('portal/courses/courses.html', teacher_courses=teacher_courses)
 
 
 # ------- Create Courses -----------------------------------------------------------------
@@ -30,7 +28,6 @@ def courses():
 def courses_create():
     """View for creating a course"""
     if request.method == "POST":
-        teacher = g.user['id']
         cour_name = request.form['cour_name']
         cour_num = request.form['cour_num']
         cour_maj = request.form['cour_maj']
@@ -41,7 +38,7 @@ def courses_create():
         if check == True:
             cur = get_db().cursor()
             cur.execute("""INSERT INTO courses (major, name, num, description, credits, teacher_id)
-                            VALUES (%s, %s, %s, %s, %s, %s);""", (cour_maj, cour_name, cour_num, cour_desc, cour_cred, teacher))
+                            VALUES (%s, %s, %s, %s, %s, %s);""", (cour_maj, cour_name, cour_num, cour_desc, cour_cred, g.user['id']))
             remove_prev_info('create')
             get_db().commit()
             cur.close()
@@ -50,35 +47,31 @@ def courses_create():
         else:
             return check
 
-    return render_template('portal/createcourse.html')
+    return render_template('portal/courses/createcourse.html')
 
 
 @bp.route('/<int:cour_id>/viewcourse')
 @teacher_required
 def courses_view(cour_id):
     """Shows details of a course to teacher"""
-    teacher = g.user['id']
     cur = get_db().cursor()
 
     cur.execute(
-        "SELECT * FROM courses WHERE teacher_id = %s AND id = %s;", (teacher, cour_id))
+        "SELECT * FROM courses WHERE teacher_id = %s AND id = %s;", (g.user['id'], cour_id))
 
     course = cur.fetchone()
-    return render_template('portal/viewcourse.html', course=course)
+    return render_template('portal/courses/viewcourse.html', course=course)
 
 @bp.route('/deletecourse', methods=("POST",))
 @teacher_required
 def courses_delete():
     """View for deleting courses"""
     course_to_delete = request.form['course_to_delete']
-    teacher = g.user['id']
-
-
 
     cur = get_db().cursor()
 
     cur.execute("DELETE FROM courses WHERE teacher_id = %s AND id = %s;",
-                (teacher, course_to_delete))
+                (g.user['id'], course_to_delete))
     get_db().commit()
     cur.close()
     return redirect(url_for('courses.courses'))
@@ -90,9 +83,8 @@ def courses_delete():
 def courses_edit(cour_id):
     """Edits the course name/info"""
     cur = get_db().cursor()
-    teacher = g.user['id']
     cur.execute("SELECT * FROM courses WHERE teacher_id = %s AND id = %s;",
-                (teacher, cour_id))
+                (g.user['id'], cour_id))
     course = cur.fetchone()
 
 
@@ -111,7 +103,7 @@ def courses_edit(cour_id):
             cur.execute(
                 """UPDATE courses SET (major, name, num, credits, description) = (%s, %s, %s, %s, %s)
                     WHERE id = %s AND teacher_id = %s ;""",
-                    (cour_maj, cour_name, cour_num, cour_cred, cour_desc, cour_id, teacher)
+                    (cour_maj, cour_name, cour_num, cour_cred, cour_desc, cour_id, g.user['id'])
             )
             remove_prev_info('edit')
             get_db().commit()
@@ -121,4 +113,4 @@ def courses_edit(cour_id):
         else:
             return check
 
-    return render_template("portal/editcourse.html", course=course)
+    return render_template("portal/courses/editcourse.html", course=course)

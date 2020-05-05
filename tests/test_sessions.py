@@ -5,62 +5,45 @@ from portal.db import get_db
 
 # get sessions page as student where they are enrolled in
 def test_view_sessions(app, client, auth):
-    with app.app_context():
-        db = get_db()
+    # login as student
+    auth.login()
 
-        cur = db.cursor()
-        # login as student
-        auth.login()
-
-        # get it
-        response = client.get('/sessions')
-        assert response.data.count(b'Software Project II') == 2
+    # get it
+    response = client.get('/sessions')
+    assert response.data.count(b'Software Project II') == 2
 
 
 # see all sessions of a class
 def test_view_course_sessions(app, client, auth):
-    with app.app_context():
-        db = get_db()
+    # login as teacher
+    auth.teacher_login()
 
-        cur = db.cursor()
-        # login as teacher
-        auth.teacher_login()
-
-        # get the sessions in the class
-        response = client.get('/sessions/1')
-        assert response.data.count(b'Software Project II') == 2
+    # get the sessions in the class
+    response = client.get('/sessions/1')
+    assert response.data.count(b'Software Project II') == 2
 
 
 # create sessions
 
 def test_create_session(app, client, auth):
-    with app.app_context():
-        db = get_db()
+    # login as teacher
+    auth.teacher_login()
 
-        cur = db.cursor()
-        # login as teacher
-        auth.teacher_login()
+    # create a new software project session
+    client.post('/createsession?course_id=2', data={
+        'section': 'H', 'meeting': '09:18', 'location': '100', 'students': 'kyle'})
 
-        # create a new software project session
-        client.post('/createsession?course_id=2', data={
-            'section': 'H', 'meeting': '09:18', 'location': '100', 'students': 'kyle'})
-
-        response = client.get('/sessions/1')
-        assert response.data.count(b'Software Project II') == 2
+    response = client.get('/sessions/1')
+    assert response.data.count(b'Software Project II') == 2
 
 def test_view_sessions(app, client, auth):
-    with app.app_context():
-        db = get_db()
+    auth.teacher_login()
 
-        cur = db.cursor()
+    response = client.get(
+        '/viewsession/1/B/Software%20Project%20II')
 
-        auth.teacher_login()
-
-        response = client.get(
-            '/viewsession/1/B/Software%20Project%20II')
-
-        assert b"Software Project I" in response.data
-        assert b"Session Time" in response.data
+    assert b"Software Project I" in response.data
+    assert b"Session Time" in response.data
 
 
 def test_delete_sessions(app, client, auth):
@@ -85,18 +68,13 @@ def test_delete_sessions(app, client, auth):
     ('/deletesession')
 ))
 def test_teacher_check(app, client, auth, url):
-    with app.app_context():
-        db = get_db()
+    auth.login()
+    if url == '/deletesession':
+        response = client.post(url, data={'course_to_delete': 4})
+    else:
+        response = client.get(url)
 
-        cur = db.cursor()
-
-        auth.login()
-        if url == '/deletesession':
-            response = client.post(url, data={'course_to_delete': 4})
-        else:
-            response = client.get(url)
-
-        assert b'Redirect' in response.data
+    assert b'Redirect' in response.data
 
 
 @pytest.mark.parametrize(('role'), (
@@ -104,13 +82,21 @@ def test_teacher_check(app, client, auth, url):
     ('student'),
 ))
 def test_session_role(app, client, auth, role):
-    with app.app_context():
-        if role == 'teacher':
-            auth.teacher_login()
-            request = client.get('/sessions')
-            course = client.get('/courses')
-            assert b'tically to target URL: <a href="/courses">/courses</a>.' in request.data
-        else:
-            auth.login()
-            request = client.get('/sessions')
-            assert b'Software Project II' in request.data
+    if role == 'teacher':
+        auth.teacher_login()
+        request = client.get('/sessions')
+        course = client.get('/courses')
+        assert b'tically to target URL: <a href="/courses">/courses</a>.' in request.data
+    else:
+        auth.login()
+        request = client.get('/sessions')
+        assert b'Software Project II' in request.data
+
+def test_session_errors(app, client, auth):
+    auth.teacher_login()
+
+    response = client.post('/createsession?course_id=2', data={
+        'section': 'A', 'meeting': '11:11', 'location': '', 'students': 'kyle'})
+
+    assert b'That section already exists.</div>' in response.data
+    assert b'Please enter a location.</div>' in response.data

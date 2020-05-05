@@ -1,0 +1,66 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}TSCT Portal{% endblock %}
+
+{% block content %}
+<a class="white-to-red" href="{{ url_for('courses.courses') }}">Back</a>
+<h1 class="ts-portal">Edit course</h1>
+
+{% if session.cour_name %}
+<form method="post">
+
+  <label for="cour_name">Course Name
+    <input type="text" id="cour_name" name="cour_name" value='{{session.cour_name}}' minlength="4" maxlength="50" pattern="(^\w)(\s*|\w*)*" title="4 to 50 letters only." required>
+  </label>
+
+  <label for="cour_num">Course Number
+    <input type="number" id="cour_num" name="cour_num" min="100" max="999" value='{{session.cour_num}}' required>
+  </label>
+
+  <label for="cour_maj">Major
+    <input type="text" id="cour_maj" name="cour_maj" value='{{session.cour_maj}}' minlength="3" maxlength="4" pattern="([A-z]+)" title="3 to 4 letters only." required>
+  </label>
+
+  <label for="cour_cred">Credits
+    <input type="number" id="cour_cred" name="cour_cred" min="1" max="4" value='{{session.cour_cred}}' required>
+  </label>
+
+  <label for="cour_desc">Description
+    <textarea id="cour_desc" name="cour_desc" rows="5" cols="33" minlength="4" maxlength="200" pattern="(^\w)([\s\S]*)" title="Descriptions should be 4 to 200 characters only." required>{{session.cour_desc}}</textarea>
+  </label>
+
+  <input type="submit" value="Submit">
+</form>
+
+{% else %}
+<form method="post">
+
+  <label for="cour_name">Course Name
+    <input type="text" id="cour_name" name="cour_name" value="{{course[2]}}" minlength="4" maxlength="50" pattern="(^\w)(\s*|\w*)*" title="4 to 50 letters only." required>
+  </label>
+
+  <label for="cour_num">Course Number
+    <input type="number" id="cour_num" name="cour_num" min="100" max="999" value="{{course[3]}}" required>
+  </label>
+
+  <label for="cour_maj">Major
+    <input type="text" id="cour_maj" name="cour_maj" value="{{course[1]}}" minlength="3" maxlength="4" pattern="([A-z]+)" title="3 to 4 letters only." required>
+  </label>
+
+  <label for="cour_cred">Credits
+    <input type="number" id="cour_cred" name="cour_cred" min="1" max="4" value="{{course[5]}}" required>
+  </label>
+
+  <label for="cour_desc">Description
+    <textarea id="cour_desc" name="cour_desc" rows="5" cols="33" minlength="4" maxlength="200" pattern="(^\w)([\s\S]*)" title="Descriptions should be 4 to 200 characters only." required>{{course[4]}}</textarea>
+  </label>
+
+  <input type="submit" value="Submit">
+</form>
+{% endif %}
+
+
+
+
+
+{% endblock %}

@@ -8,11 +8,11 @@
 <h1 class="ts-portal">Create Assignment</h1>
 <form method="post">
   <label for="name">Name
-  <input type="text" id="name" name="name" maxlength="25" required>
+  <input type="text" id="name" name="name" maxlength="25" pattern="(^\w)([\s\S]*)" title="Assignment names must be 25 characters or less." required>
   </label>
 
   <label for=type">Type
-  <input type="text" id="type" name="type" maxlength="25" required>
+  <input type="text" id="type" name="type" maxlength="25" pattern="(^\w)([\s\S]*)" title="Assignment types must be 25 characters or less." required>
   </label>
 
   <label for=points">Total Points

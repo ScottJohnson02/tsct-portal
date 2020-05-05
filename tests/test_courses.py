@@ -19,7 +19,7 @@ def test_create_course(app, client, auth):
 
         auth.teacher_login()
 
-        # post it
+        # Make a post request for create course.
         response = client.post('/createcourse', data={'cour_maj': 'CSET', 'cour_name': 'test course',
                                                       'cour_num': 100, 'cour_desc': 'test description', 'cour_cred': 3})
         # check the db and see if that course exists now
@@ -38,18 +38,13 @@ def test_create_course(app, client, auth):
 
 
 def test_create_save_data(app, auth, client):
-    with app.app_context():  # allows DB queries to happen
-        db = get_db()
+    auth.teacher_login()
 
-        cur = db.cursor()
-
-        auth.teacher_login()
-
-        # post it
-        response = client.post('/createcourse', data={'cour_maj': 'CSET', 'cour_name': 'Metal',
-                                                      'cour_num': 100, 'cour_desc': 'test description', 'cour_cred': 3})
-        # create a class that already exists
-        assert b'A course already exists with that name.' in response.data
+    # Make a post request for create course that will cause an error.
+    response = client.post('/createcourse', data={'cour_maj': 'CSET', 'cour_name': 'Metal',
+                                                  'cour_num': 100, 'cour_desc': 'test description', 'cour_cred': 3})
+    # create a class that already exists
+    assert b'A course already exists with that name.' in response.data
 
 
 def test_edit_course(app, client, auth):
@@ -59,7 +54,7 @@ def test_edit_course(app, client, auth):
         cur = db.cursor()
 
         auth.teacher_login()
-        # post it again
+        # Create a post request for editting a course.
         response = client.post('/1/editcourse', data={'cour_name': 'This is a test', 'cour_num': 111,
                                                       'cour_maj': 'CSET', 'cour_cred': 1, 'cour_desc': 'test description'})
         # check if it's been updated
@@ -77,36 +72,30 @@ def test_edit_course(app, client, auth):
 
 
 def test_edit_save_data(app, client, auth):
-    with app.app_context():
-        db = get_db()
-
-        cur = db.cursor()
-
-        auth.teacher_login()
-        # post it again
-        response = client.post('/1/editcourse', data={'cour_name': 'Metal', 'cour_num': 111,
-                                                      'cour_maj': 'CSET', 'cour_cred': 1, 'cour_desc': 'test description'})
-        # check if it's been updated
-        assert b'value="1"' in response.data
+    auth.teacher_login()
+    # Create a post request for editting a course that will fail and keep the previous information.
+    response = client.post('/1/editcourse', data={'cour_name': 'Metal', 'cour_num': 111,
+                                                  'cour_maj': 'CSET', 'cour_cred': 1, 'cour_desc': 'test description'})
+    # check if it's been updated
+    assert b'test description' in response.data
 
 
 def test_course_id_length(app, client, auth):
-    with app.app_context():
-        auth.teacher_login()
-        response = client.post('/createcourse', data={'cour_name': 'djhcd', 'cour_num': 111,
-                                                      'cour_maj': 'CSETt', 'cour_cred': 1, 'cour_desc': 'test description'})
-        assert b'Course Majors can only have a maximum of 4 letters.' in response.data
-        # b'Course Majors can only have a maximum of 4 letters.'
+    auth.teacher_login()
+    response = client.post('/createcourse', data={'cour_name': 'djhcd', 'cour_num': 111,
+                                                  'cour_maj': 'CSETt', 'cour_cred': 1, 'cour_desc': 'test description'})
+    assert b'Course Majors can only have a maximum of 4 letters.' in response.data
+    # b'Course Majors can only have a maximum of 4 letters.'
 
 
 def test_edit_course_id_length(app, client, auth):
-    with app.app_context():
-        auth.teacher_login()
-        client.get('')
-        response = client.post('/1/editcourse', data={'cour_name': 'something', 'cour_num': 111,
-                                                      'cour_maj': 'CSETtt', 'cour_cred': 1, 'cour_desc': 'test description'})
-        assert b'Course Majors can only have a maximum of 4 letters.' in response.data
-        # b'Course Majors can only have a maximum of 4 letters.'
+    auth.teacher_login()
+
+    client.get('')
+    response = client.post('/1/editcourse', data={'cour_name': 'something', 'cour_num': 111,
+                                                  'cour_maj': 'CSETtt', 'cour_cred': 1, 'cour_desc': 'test description'})
+    assert b'Course Majors can only have a maximum of 4 letters.' in response.data
+    # b'Course Majors can only have a maximum of 4 letters.'
 
 
 def test_delete_course(app, client, auth):
@@ -132,43 +121,28 @@ def test_delete_course(app, client, auth):
     ('/deletecourse')
 ))
 def test_teacher_check(app, client, auth, url):
-    with app.app_context():
-        db = get_db()
+    auth.login()
+    if url == '/deletecourse':
+        response = client.post(url, data={'course_to_delete': 4})
+    else:
+        response = client.get(url)
 
-        cur = db.cursor()
-
-        auth.login()
-        if url == '/deletecourse':
-            response = client.post(url, data={'course_to_delete': 4})
-        else:
-            response = client.get(url)
-
-        assert b'Redirect' in response.data
+    assert b'Redirect' in response.data
 
 
 def test_course_view(app, client, auth):
-    with app.app_context():
-        db = get_db()
+    auth.teacher_login()
 
-        cur = db.cursor()
+    response = client.get('/1/viewcourse')
 
-        auth.teacher_login()
-
-        response = client.get('/1/viewcourse')
-
-        assert b'Software Project II' in response.data
-        assert b'blaaah' in response.data
+    assert b'Software Project II' in response.data
+    assert b'blaaah' in response.data
 
 
 def test_get_edit(app, client, auth):
-    with app.app_context():
-        db = get_db()
+    auth.teacher_login()
 
-        cur = db.cursor()
+    response = client.get('/1/editcourse')
 
-        auth.teacher_login()
-
-        response = client.get('/1/editcourse')
-
-        assert b'Software Project II' in response.data
-        assert b'blaaah' in response.data
+    assert b'Software Project II' in response.data
+    assert b'blaaah' in response.data

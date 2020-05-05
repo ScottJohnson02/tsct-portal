@@ -28,7 +28,7 @@ def test_login(client, auth):
     response = auth.login()
     assert response.headers['Location'] == 'http://localhost/home'
     response = client.get('/home')
-    assert b'student' in response.data
+    assert b'Welcome' in response.data
 
 
 @pytest.mark.parametrize(('username', 'password', 'message'), (
