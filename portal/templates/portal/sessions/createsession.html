@@ -9,13 +9,13 @@
 
 <form method="post">
   <label for="section">Section
-    <input name="section" id="section" maxlength="1" value="{{session.section}}">
+    <input name="section" id="section" minlength="1" maxlength="1" value="{{session.section}}" pattern="([A-z])" required>
   </label>
   <label for="end">Meeting Time
-    <input type="time" name="meeting" id="meeting" value='{{session.meeting}}'>
+    <input type="time" name="meeting" id="meeting" value='{{session.meeting}}' required>
   </label>
-  <label for="location"> Location
-    <input name="location" id="location" value="{{session.location}}">
+  <label for="location">Location
+    <input name="location" id="location" value="{{session.location}}" minlength="3" maxlength="30" pattern="(^\w)([\s\S]*)" title="Locations should not be blank or more than 30 characters." required>
   </label>
 
   <p>add students to roster</p>

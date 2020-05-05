@@ -77,7 +77,7 @@ def test_edit_save_data(app, client, auth):
     response = client.post('/1/editcourse', data={'cour_name': 'Metal', 'cour_num': 111,
                                                   'cour_maj': 'CSET', 'cour_cred': 1, 'cour_desc': 'test description'})
     # check if it's been updated
-    assert b'value="1"' in response.data
+    assert b'test description' in response.data
 
 
 def test_course_id_length(app, client, auth):
